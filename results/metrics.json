@@ -1,0 +1,43 @@
+{
+  "bytes": {
+    "markdown": 2638,
+    "json": 3420
+  },
+  "chars": {
+    "markdown": 2633,
+    "json": 3420
+  },
+  "tokens_o200k": {
+    "markdown": 658,
+    "json": 855
+  },
+  "tool_downstream_extraction": {
+    "json": {
+      "method": "json.loads + key path",
+      "result": {
+        "json_parse_ok": true,
+        "numbers_recoverable_without_llm": [
+          14
+        ],
+        "rule_ttl_seconds_recovered": "900"
+      }
+    },
+    "markdown": {
+      "method": "argv-by-regex, one regex per rule",
+      "result": {
+        "rule_ttl_seconds_recovered": "900",
+        "rule_max_cvss_recovered": "7.0",
+        "h2_sections": [
+          "1. Scope and Classification",
+          "2. Tool-Level Authorization",
+          "3. Least Privilege Enforcement Points",
+          "4. What To Do When Teams Move Faster Than Policy",
+          "5. Audit and Review Cadence"
+        ],
+        "machine_readable_key_names": []
+      }
+    }
+  },
+  "token_overhead_json_vs_md_pct": 29.9,
+  "bytes_overhead_json_vs_md_pct": 29.6
+}

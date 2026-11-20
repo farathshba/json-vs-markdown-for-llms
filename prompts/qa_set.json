@@ -1,0 +1,20 @@
+{
+  "note": "Ground-truth Q&A set. The benchmark sends each question with EITHER the Markdown or the JSON context and scores exact-match recall against `answer`. Questions are deliberately cross-cutting: they require numbers, nested rules, and combined conditions that are easy to hallucinate.",
+  "questions": [
+    {"id": "q01", "question": "What is the maximum credential TTL for tools exposed to a Tier-2 agent, in seconds?", "answer": "900"},
+    {"id": "q02", "question": "What status code/tag does a denied call to a non-allowlisted tool return?", "answer": "AUTHZ_DENIED"},
+    {"id": "q03", "question": "What is the maximum CVSS score allowed for known vulnerabilities in a newly introduced dependency?", "answer": "7.0"},
+    {"id": "q04", "question": "How many days may a policy exception last at most, and can it be renewed without review?", "answer": "14, no"},
+    {"id": "q05", "question": "How long must the full prompt-and-response transcript be retained, in days?", "answer": "30"},
+    {"id": "q06", "question": "What document ID and version is this policy?", "answer": "OLY-SEC-POL-014, 2.3"},
+    {"id": "q07", "question": "How many AUTHZ_DENIED events for the same tool in one week trigger a registry review?", "answer": "3"},
+    {"id": "q08", "question": "Which agent tiers are OUT of scope of this policy, and what defining trait do they share?", "answer": "Tier-1 agents; they have no write access"},
+    {"id": "q09", "question": "A team wants to give a Tier-2 agent a tool that writes files outside the repo sandbox. What tier is that tool, and what approval does it require?", "answer": "Tier-3; two-person approval"},
+    {"id": "q10", "question": "At how many layers is least privilege enforced, and at which one are unknown parameters rejected?", "answer": "3; the gateway, pre-execution"},
+    {"id": "q11", "question": "Who must approve changes to the gateway registry, and via what mechanism?", "answer": "AppSec; via a pull request"},
+    {"id": "q12", "question": "For an exception, which two roles approve, and can either of them block?", "answer": "the team's engineering manager and one AppSec reviewer; yes, either may block"},
+    {"id": "q13", "question": "What must the quarterly red-team exercise include at least one of?", "answer": "a prompt-injection attempt against a Tier-2 agent"},
+    {"id": "q14", "question": "What is the effective date of this policy version?", "answer": "2026-09-01"},
+    {"id": "q15", "question": "Is the renewal of an expired exception allowed without review, and what happens if a team has an unregistered exception?", "answer": "No, renewal requires review; an unregistered exception is treated as a policy violation escalated to the CISO office"}
+  ]
+}

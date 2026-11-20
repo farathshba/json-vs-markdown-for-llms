@@ -1,0 +1,77 @@
+{
+  "document_id": "OLY-SEC-POL-014",
+  "version": "2.3",
+  "owner": "AppSec Architecture",
+  "effective_date": "2026-09-01",
+  "title": "AI Agent Security Policy - Tier-2 Coding Agents",
+  "scope": {
+    "governs": "Tier-2 AI coding agents: any LLM-based system that can propose or apply changes to application source code, pipelines, or infrastructure-as-code in Olympus-controlled environments.",
+    "excludes": "Tier-1 agents (documentation summarization, test generation without write access)"
+  },
+  "sections": {
+    "tool_level_authorization": {
+      "requirements": [
+        {
+          "rule": "gateway_registry",
+          "detail": "All tools exposed to a Tier-2 agent must go through the gateway registry.",
+          "mandatory": true
+        },
+        {
+          "rule": "capability_grant",
+          "detail": "The minimum OAuth/API scope needed, per tool, never account-level credentials.",
+          "mandatory": true
+        },
+        {
+          "rule": "explicit_allowlist",
+          "detail": "Tools not on the allowlist are unreachable; a denied call returns AUTHZ_DENIED and must be logged.",
+          "mandatory": true
+        },
+        {
+          "rule": "ephemeral_credentials",
+          "detail": "Maximum TTL 900 seconds; renewal requires a new capability grant.",
+          "mandatory": true
+        },
+        {
+          "rule": "no_direct_shell",
+          "detail": "Direct shell access is prohibited. Shell-equivalent tools (file write outside the repo sandbox, network calls beyond the package registry allowlist) are Tier-3 and require two-person approval.",
+          "mandatory": true
+        }
+      ]
+    },
+    "least_privilege_enforcement_points": {
+      "layers_in_order": [
+        {
+          "layer": "gateway_pre_execution",
+          "detail": "Schema-validate every tool call against the registry entry; reject unknown parameters."
+        },
+        {
+          "layer": "sandbox_during_execution",
+          "detail": "Filesystem restricted to the workspace; outbound network restricted to allowlisted domains."
+        },
+        {
+          "layer": "post_run_verification",
+          "detail": "Diff review plus secret scan before any merge. An agent change that introduces a new dependency must include an SCA report with a maximum CVSS of 7.0 for known vulnerabilities."
+        }
+      ]
+    },
+    "exception_fast_lane": {
+      "when_teams_move_faster_than_policy": {
+        "duration": {"max_days": 14, "auto_expires": true, "renewal_requires_review": true},
+        "approval": {"roles": ["team engineering manager", "one AppSec reviewer"], "any_may_block": true},
+        "compensating_controls": [
+          "agent output quarantined to a fork",
+          "no direct writes to protected branches",
+          "full prompt-and-response transcript retained for 30 days"
+        ],
+        "unregistered_exception_treated_as": "policy violation, not a technicality, escalated to the CISO office"
+      }
+    },
+    "audit_and_review_cadence": {
+      "rules": [
+        "All AUTHZ_DENIED events are reviewed weekly by AppSec; three denials for the same tool in one week trigger a registry review.",
+        "The gateway registry itself is version-controlled; changes require a pull request with AppSec approval.",
+        "Quarterly red-team exercise must include at least one prompt-injection attempt against a Tier-2 agent."
+      ]
+    }
+  }
+}
